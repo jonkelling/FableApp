@@ -1,14 +1,16 @@
 module FableApp
 
 open Elmish
+open Elmish.HMR
 open Elmish.React
 open Fable.Core.JsInterop
 open OpticsPlay
-// open Aether
 
 type Model = RecordA
 
-type Message = | SetValue of string
+type Message =
+    | SetEmptyValue
+    | SetValue of string
 
 let init() =
     { B={ Value="testing" } }
@@ -23,20 +25,26 @@ let init() =
     // ctx.fillStyle <- !^"rgba(0, 0, 200, 0.5)"
     // ctx.fillRect (30., 30., 55., 50.)
 
+let setavalue newvalue a = { a with B = { a.B with Value = newvalue } }
 let update msg state =
     match msg with
-    | SetValue newValue -> { state with B = { state.B with Value = newValue }}
+    | SetValue newValue -> setavalue newValue state
+    | SetEmptyValue -> setavalue "-----" state
 
 
 open Fable.Helpers.React.Props
 module R = Fable.Helpers.React
 
 let view =
-    lazyView2 (fun model dispatch ->
+    (fun model dispatch ->
         R.div [] [
             R.input [ OnChange (fun ev ->
                 let value = ev.target?value.ToString()
-                dispatch (SetValue value)) ]
+                if value.Length > 0 then
+                    dispatch (SetValue value)
+                else
+                    dispatch (SetEmptyValue)
+            ) ]
             R.div [ Style [ FontSize 20 ] ] [
                 R.ul [] [
                     R.li [] [ R.str model.B.Value ]
@@ -45,5 +53,6 @@ let view =
         ])
 
 Program.mkSimple init update view
+|> Program.withHMR
 |> Program.withReact "elmish-app"
 |> Program.run

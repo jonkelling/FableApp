@@ -3,14 +3,14 @@ module OpticsPlay
 type RecordB =
     { Value: string }
 
-    static member B_ =
+    static member Value_ =
         (fun b -> b.Value),
         (fun value b -> { b with Value = value })
 
 type RecordA =
     { B : RecordB }
 
-    static member A_ =
+    static member B_ =
         (fun a -> a.B),
         (fun b a -> { a with B = b })
 

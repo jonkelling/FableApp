@@ -1,3 +1,5 @@
 dotnet-fable
 Fable.Core
 Fable.Import.Browser
+Fable.Elmish.React
+Fable.Elmish.HMR
