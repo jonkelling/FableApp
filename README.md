@@ -5,11 +5,11 @@ I've recently been hooked on finding a good way to use F# for web development. T
 ## What's here so far
 
 * FSharp, obviously.
-* Webpack setup pulled nearly 100% from some Fable react-toolbox demo.
-* Aether&mdash;I just started looking at this and wanted to get a feel for it first hand.
+* Webpack setup pulled near 100% from some Fable react-toolbox demo.
+* Aether&mdash;just started looking at this and wanted to get a feel for it first hand.
 * SCSS and CSS
-* Using react-rangeslider, which is a third-party module. 
-  * The CSS included with it is being imported from the App.js file using !style!css! to turn off modules. Nice.
+* Using react-rangeslider, which is a third-party JS module _not_ written for F# or Fable. 
+  * The CSS included with it is being imported from App.fs using !style!css! to turn off modules. Nice.
   * There is a way to write your own F# bindings, but I was exploring Fable's ability to dynamically reference JS for this one.
 * **React!** Yep. I'm happy.
 * Trying out the Elmish (or elm) architecture instead of Redux after studying their differences. Think I might buy into it eventually. Time will tell.
