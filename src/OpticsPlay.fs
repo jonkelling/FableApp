@@ -22,19 +22,19 @@ type RecordC =
         (fun c -> c.B),
         (fun b (c:RecordC) -> { c with B = b })
 
-let fdsa b a = { a with B = b }
+// let fdsa b a = { a with B = b }
 
-let getB a = a.B
-let getValue b = b.Value
-let get = getB >> getValue
+// let getB a = a.B
+// let getValue b = b.Value
+// let get = getB >> getValue
 
-let setB b a = { a with B = b }
-let setValue value b = { b with Value = value }
-let set value a = setB (setValue value (getB a)) a
+// let setB b a = { a with B = b }
+// let setValue value b = { b with Value = value }
+// let set value (a:RecordA) :RecordA = setB (setValue value (getB a)) a
 
-let f1 value a = setValue value (getB a)
+// let f1 value a = setValue value (getB a)
 
-let ff f1 f2 x = f2 (f1 x) x
+// let ff f1 f2 x = f2 (f1 x) x
 
-let f2 value = (getB >> setValue value)
-let f3 value a = setB ((getB >> setValue value) a) a
+// let f2 value = (getB >> setValue value)
+// let f3 value a = setB ((getB >> setValue value) a) a

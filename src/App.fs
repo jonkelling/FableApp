@@ -44,6 +44,8 @@ let update msg state =
 
 let fill = Fable.Helpers.React.Props.Fill
 
+let DualSlider = importDefault<RCom> "./components/DualSlider"
+
 let view =
     (fun (model:RecordA) dispatch ->
         let rect x y w h = [ X x; Y y; !! ("width", w); !! ("height", h) ]
@@ -83,6 +85,10 @@ let view =
                     R.str "fdsafdsafs"                    
                 ]
             ]
+            R.from DualSlider %[
+                "value1" ==> model.sliderValue
+                "onSlider1Change" ==> (SetSliderValue >> dispatch)
+            ] []
         ])
 
 Program.mkSimple init update view

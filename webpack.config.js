@@ -10,13 +10,15 @@ var proj_path = "./src";
 const isProduction = false;
 
 var babelOptions = fableUtils.resolveBabelOptions({
-  presets: [["es2015", { "modules": false }]],
+  presets: ["react", ["es2015", { "modules": false }]],
   plugins: ["transform-runtime"]
 });
 
 var cfg = {
   devtool: "source-map",
-  entry:  proj_path+"/FableApp.fsproj",
+  entry:  [
+    proj_path+"/FableApp.fsproj"
+  ],
   output: {
       publicPath: "/",
       path: out_path,
