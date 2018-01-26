@@ -5,39 +5,49 @@ open Elmish.HMR
 open Elmish.React
 open Fable.Core.JsInterop
 open OpticsPlay
+open Aether
+open Aether.Operators
+
+open Fable.Import
+
+open Fable.Helpers.React.Props
+module R = Fable.Helpers.React
+
+type RCom = React.ComponentClass<obj>
+
+let Slider = importDefault<RCom> "react-rangeslider"
+
+importDefault "!style-loader!css-loader!react-rangeslider/lib/index.css"
+
+let styles = importDefault<obj> "./App.scss"
+
+let inline (~%) x = createObj x
 
 type Model = RecordA
 
 type Message =
     | SetEmptyValue
     | SetValue of string
+    | SetSliderValue of int
 
 let init() =
-    { B={ Value="testing" } }
-    // let canvas = Browser.document.getElementsByTagName_canvas().[0]
-    // canvas.width <- 1000.
-    // canvas.height <- 800.
-    // let ctx = canvas.getContext_2d()
-    // The (!^) operator checks and casts a value to an Erased Union type
-    // See http://fable.io/docs/interacting.html#Erase-attribute
-    // ctx.fillStyle <- !^"rgb(200,0,0)"
-    // ctx.fillRect (10., 10., 55., 50.)
-    // ctx.fillStyle <- !^"rgba(0, 0, 200, 0.5)"
-    // ctx.fillRect (30., 30., 55., 50.)
+    { RecordA.B={ Value="testing" }
+      sliderValue=5 }
 
-let setavalue newvalue a = { a with B = { a.B with Value = newvalue } }
+let setavalue = Optic.set (RecordA.B_ >-> RecordB.Value_)
 let update msg state =
     match msg with
     | SetValue newValue -> setavalue newValue state
     | SetEmptyValue -> setavalue "-----" state
+    | SetSliderValue value -> { state with sliderValue = value }
 
 
-open Fable.Helpers.React.Props
-module R = Fable.Helpers.React
+let fill = Fable.Helpers.React.Props.Fill
 
 let view =
-    (fun model dispatch ->
-        R.div [] [
+    (fun (model:RecordA) dispatch ->
+        let rect x y w h = [ X x; Y y; !! ("width", w); !! ("height", h) ]
+        R.div [ ClassName (!! styles?("app")) ] [
             R.input [ OnChange (fun ev ->
                 let value = ev.target?value.ToString()
                 if value.Length > 0 then
@@ -48,6 +58,26 @@ let view =
             R.div [ Style [ FontSize 20 ] ] [
                 R.ul [] [
                     R.li [] [ R.str model.B.Value ]
+                ]
+            ]
+            R.div [] [
+                R.div [ Style [ Float "left" ] ] [
+                    R.svg [ !! ("width", "200px") ] [
+                        R.rect ([ fill "rgb(200, 0, 0)" ] @ !! rect 10 10 model.sliderValue model.sliderValue) []
+                        R.rect ([ fill "rgba(0, 0, 200, 0.5)" ] @ !! rect 30 30 model.sliderValue model.sliderValue) []
+                    ]
+                ]
+                R.div [] [
+                    R.str "fdsafdsafs"                    
+                    R.from Slider
+                        %["min" ==> 1
+                          "max" ==> 100
+                          "style" ==> "width: 50px; height: 200px"
+                          "value" ==> model.sliderValue
+                          "orientation" ==> "vertical"
+                          "onChange" ==> (SetSliderValue >> dispatch)]
+                        []
+                    R.str "fdsafdsafs"                    
                 ]
             ]
         ])

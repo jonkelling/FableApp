@@ -6,3 +6,4 @@ nuget Fable.Core
 nuget Fable.Elmish.HMR
 nuget Fable.Elmish.React
 nuget Fable.Import.Browser
+nuget Fable.Aether

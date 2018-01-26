@@ -8,11 +8,19 @@ type RecordB =
         (fun value b -> { b with Value = value })
 
 type RecordA =
-    { B : RecordB }
+    { B : RecordB
+      sliderValue: int }
 
     static member B_ =
         (fun a -> a.B),
         (fun b a -> { a with B = b })
+
+type RecordC =
+    { B : RecordB option }
+
+    static member B_ =
+        (fun c -> c.B),
+        (fun b (c:RecordC) -> { c with B = b })
 
 let fdsa b a = { a with B = b }
 
