@@ -32,7 +32,7 @@ type Message =
 
 let init() =
     { RecordA.B={ Value="testing" }
-      sliderValue=5 }
+      sliderValue=50 }
 
 let setavalue = Optic.set (RecordA.B_ >-> RecordB.Value_)
 let update msg state =
@@ -48,13 +48,16 @@ let view =
     (fun (model:RecordA) dispatch ->
         let rect x y w h = [ X x; Y y; !! ("width", w); !! ("height", h) ]
         R.div [ ClassName (!! styles?("app")) ] [
-            R.input [ OnChange (fun ev ->
-                let value = ev.target?value.ToString()
-                if value.Length > 0 then
-                    dispatch (SetValue value)
-                else
-                    dispatch (SetEmptyValue)
-            ) ]
+            R.input [
+                DefaultValue model.B.Value
+                OnChange (fun ev ->
+                    let value = ev.target?value.ToString()
+                    if value.Length > 0 then
+                        dispatch (SetValue value)
+                    else
+                        dispatch (SetEmptyValue)
+                )
+            ]
             R.div [ Style [ FontSize 20 ] ] [
                 R.ul [] [
                     R.li [] [ R.str model.B.Value ]
