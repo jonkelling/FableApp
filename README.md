@@ -2,6 +2,13 @@
 
 I've recently been hooked on finding a good way to use F# for web development. This is my attempt at learning Fable and its pros/cons.
 
+## How to use
+
+* Use VS Code
+* dotnet restore
+* yarn install
+* run `dotnet fable yarn-start` in VS Code terminal
+
 ## What's here so far
 
 * FSharp, obviously.
