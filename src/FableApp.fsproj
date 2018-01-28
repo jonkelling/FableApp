@@ -4,9 +4,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="OpticsPlay.fs" />
-    <Compile Include="RangeSlider.fs" />
-    <Compile Include="DualSlider.fs" />
-    <Compile Include="App.fs" />
+    <Compile Include="components/RangeSlider.fs" />
+    <Compile Include="components/DualSlider.fs" />
+    <Compile Include="app/App.fs" />
   </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

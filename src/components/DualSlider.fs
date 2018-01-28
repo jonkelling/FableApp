@@ -16,7 +16,7 @@ type DualSliderProps<'a when 'a : unmanaged> =
 
 let DualSlider props children =
     R.from
-        (importDefault<RCom> "./components/DualSlider")
+        (importDefault<RCom> "./DualSlider")
         (keyValueList CaseRules.LowerFirst props)
         children
 
