@@ -13,6 +13,7 @@ open Fable.Import
 open Fable.Helpers.React.Props
 open ReactRangeSlider
 open System
+open DualSlider
 
 module R = Fable.Helpers.React
 
@@ -41,7 +42,6 @@ let update msg state =
 
 let fill = Fable.Helpers.React.Props.Fill
 
-let DualSlider = importDefault<RCom> "./components/DualSlider"
 
 let view =
     (fun (model:RecordA) dispatch ->
@@ -78,21 +78,30 @@ let view =
                     ]
                 ]
                 R.div [] [
-                    R.str "fdsafdsafs"                    
+                    R.str "fdsafdsafs"
                     ReactRangeSlider
                         sliderProps
                         []
-                    R.str "fdsafdsafs"                    
+                    R.str "fdsafdsafs"
                 ]
             ]
-            R.div [] [                 
+            R.div [] [
+                DualSlider [
+                    Value1 model.sliderValue
+                    Value2 (101 - model.sliderValue)
+                    OnSlider1Change (SetSliderValue >> dispatch)
+                    OnSlider2Change (
+                        ((-) 101) >> Convert.ToDouble >>
+                        ((*) 0.5) >> Convert.ToInt32 >> 
+                        SetSliderValue >> dispatch)
+                ] []
                 ReactRangeSlider
                     (sliderProps @ [ ReactRangeSliderProps.Orientation ReactRangeSliderProps.Horizontal ])
-                    []                 
+                    []
                 ReactRangeSlider
                     (sliderProps @ [
                         Style [ Width "50px"; Height "200px" ]
-                        ReactRangeSliderProps.Value (100 - model.sliderValue + 1)
+                        ReactRangeSliderProps.Value (101 - model.sliderValue)
                         ReactRangeSliderProps.Orientation ReactRangeSliderProps.Horizontal
                         ReactRangeSliderProps.OnChange (
                             ((-) 101) >> Convert.ToDouble >>

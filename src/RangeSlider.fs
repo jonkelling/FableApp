@@ -37,6 +37,11 @@ module public ReactRangeSliderProps =
 type RCom = React.ComponentClass<obj>
 
 let ReactRangeSlider props children =
-    let cmp = importDefault<RCom> "react-rangeslider"
-    let props2 = keyValueList CaseRules.LowerFirst props
-    Fable.Helpers.React.from cmp props2 children
+    let f1 =
+        Fable.Helpers.React.from
+            (importDefault<RCom> "react-rangeslider")
+    let f2 =
+        f1
+            (keyValueList CaseRules.LowerFirst props)
+            children
+    f2
