@@ -11,17 +11,14 @@ open Aether.Operators
 open Fable.Import
 
 open Fable.Helpers.React.Props
+open ReactRangeSlider
+open System
+
 module R = Fable.Helpers.React
 
 type RCom = React.ComponentClass<obj>
 
-let Slider = importDefault<RCom> "react-rangeslider"
-
-importDefault "!style-loader!css-loader!react-rangeslider/lib/index.css"
-
 let styles = importDefault<obj> "./App.scss"
-
-let inline (~%) x = createObj x
 
 type Model = RecordA
 
@@ -49,6 +46,14 @@ let DualSlider = importDefault<RCom> "./components/DualSlider"
 let view =
     (fun (model:RecordA) dispatch ->
         let rect x y w h = [ X x; Y y; !! ("width", w); !! ("height", h) ]
+        let (sliderProps:IHTMLProp list) = [
+            //   "style" ==> "width: 50px; height: 200px"
+            ReactRangeSliderProps.Min 1
+            ReactRangeSliderProps.Max 100
+            ReactRangeSliderProps.Value model.sliderValue
+            ReactRangeSliderProps.Orientation ReactRangeSliderProps.Vertical
+            ReactRangeSliderProps.OnChange (SetSliderValue >> dispatch |> Some)
+        ]
         R.div [ ClassName (!! styles?("app")) ] [
             R.input [
                 DefaultValue model.B.Value
@@ -74,21 +79,28 @@ let view =
                 ]
                 R.div [] [
                     R.str "fdsafdsafs"                    
-                    R.from Slider
-                        %["min" ==> 1
-                          "max" ==> 100
-                          "style" ==> "width: 50px; height: 200px"
-                          "value" ==> model.sliderValue
-                          "orientation" ==> "vertical"
-                          "onChange" ==> (SetSliderValue >> dispatch)]
+                    ReactRangeSlider
+                        sliderProps
                         []
                     R.str "fdsafdsafs"                    
                 ]
             ]
-            R.from DualSlider %[
-                "value1" ==> model.sliderValue
-                "onSlider1Change" ==> (SetSliderValue >> dispatch)
-            ] []
+            R.div [] [                 
+                ReactRangeSlider
+                    (sliderProps @ [ ReactRangeSliderProps.Orientation ReactRangeSliderProps.Horizontal ])
+                    []                 
+                ReactRangeSlider
+                    (sliderProps @ [
+                        Style [ Width "50px"; Height "200px" ]
+                        ReactRangeSliderProps.Value (100 - model.sliderValue + 1)
+                        ReactRangeSliderProps.Orientation ReactRangeSliderProps.Horizontal
+                        ReactRangeSliderProps.OnChange (
+                            ((-) 101) >> Convert.ToDouble >>
+                            ((*) 0.5) >> Convert.ToInt32 >>
+                            SetSliderValue >> dispatch |> Some)
+                    ])
+                    []
+            ]
         ])
 
 Program.mkSimple init update view
