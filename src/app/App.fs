@@ -32,7 +32,7 @@ type Message =
     | SetEmptyValue
     | SetValue of string
     | SetSliderValue of int
-    | TedtalkData of Tedtalks.Tedtalks
+    | TedtalkData of Tedtalks.Tedtalks option
 
 let init() =
     {
@@ -50,7 +50,7 @@ let update msg state =
     | SetValue newValue -> { state with Data1 = setavalue newValue state.Data1 }
     | SetEmptyValue -> { state with Data1 = setavalue "-----" state.Data1 }
     | SetSliderValue value -> { state with Data1 = { state.Data1 with sliderValue = value } }
-    | TedtalkData value -> { state with Ted = Some value }
+    | TedtalkData value -> { state with Ted = value }
 
 
 let fill = Fable.Helpers.React.Props.Fill
@@ -61,8 +61,11 @@ let view =
         let rect x y w h = [ X x; Y y; !! ("width", w); !! ("height", h) ]
         let (sliderProps:IHTMLProp list) = [
             //   "style" ==> "width: 50px; height: 200px"
-            ReactRangeSliderProps.Min 1
-            ReactRangeSliderProps.Max 100
+            ReactRangeSliderProps.Min 0
+            ReactRangeSliderProps.Max <|
+                match model.Ted with
+                | Some data -> data.ted.Length - 1
+                | None -> 100
             ReactRangeSliderProps.Value model.Data1.sliderValue
             ReactRangeSliderProps.Orientation ReactRangeSliderProps.Vertical
             ReactRangeSliderProps.OnChange (SetSliderValue >> dispatch |> Some)
@@ -91,7 +94,6 @@ let view =
                     ]
                 ]
                 R.div [] [
-                    R.str "fdsafdsafs"
                     ReactRangeSlider
                         sliderProps
                         []
@@ -125,9 +127,10 @@ let view =
             ]
             R.div [] [
                 R.button [
-                        OnClick (fun ev ->
+                        OnClick (fun _ ->
+                            dispatch <| TedtalkData None
                             Tedtalks.data
-                            |> Promise.map (TedtalkData >> dispatch)
+                            |> Promise.map (Some >> TedtalkData >> dispatch)
                             |> ignore)
                     ] [
                         R.str "Load Data"
@@ -137,7 +140,7 @@ let view =
                 R.str
                 <| match model.Ted with
                     | None -> "No TED data"
-                    | Some ted -> !! (Array.item model.Data1.sliderValue (!! ted.ted))?("main_speaker")
+                    | Some ted -> (List.item (model.Data1.sliderValue) (ted.ted)).description
             ]
         ])
 
