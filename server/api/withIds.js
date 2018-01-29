@@ -1,0 +1,1 @@
+export default fn => async () => (await fn()).map((x, id) => ({id, ...x}));
