@@ -1,4 +1,4 @@
-module Tedtalks
+module TedTalkData
 
 open Fable.PowerPack
 open Fetch
@@ -34,7 +34,9 @@ type TedTranscript = {
 type Tedtalks = {
     ted: TedTalk list
     transcripts: TedTranscript list
-}
+
+} with
+    static member GetTed = fun ted -> ted.ted
 
 let data =
     promise {

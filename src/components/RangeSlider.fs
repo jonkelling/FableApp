@@ -15,7 +15,7 @@ module public ReactRangeSliderProps =
         | [<CompiledName("horizontal")>] Horizontal
         | [<CompiledName("vertical")>] Vertical
 
-    type ReactRangeSliderNumericAttr<'a when 'a : unmanaged> =
+    type ReactRangeSliderNumericAttr<'a> =
         | Min of 'a
         | Max of 'a
         | Step of 'a
@@ -36,12 +36,12 @@ module public ReactRangeSliderProps =
 
 type RCom = React.ComponentClass<obj>
 
-let ReactRangeSlider props children =
+let ReactRangeSlider props =
     let f1 =
         Fable.Helpers.React.from
             (importDefault<RCom> "react-rangeslider")
     let f2 =
         f1
             (keyValueList CaseRules.LowerFirst props)
-            children
+            []
     f2

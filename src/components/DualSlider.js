@@ -15,29 +15,29 @@ export default class DualSlider extends React.Component {
 
     onSlider1Change(value1) {
         this.setState({value1});
-        this.props.onSlider1Change &&
+        this.props.onSlider1Change !== undefined &&
         this.props.onSlider1Change(value1);
     }
 
     onSlider2Change(value2) {
         this.setState({value2});
-        this.props.onSlider2Change &&
+        this.props.onSlider2Change !== undefined &&
         this.props.onSlider2Change(value2);
     }
 
     render() {
         return <div>
             <div><Slider
-                min={1}
+                min={0}
                 max={100}
                 orientation='horizontal'
-                value={this.props.value1 || this.state.value1}
+                value={this.props.value1 === undefined ? this.state.value1 : this.props.value1}
                 onChange={this.onSlider1Change} /></div>
             <div><Slider
-                min={1}
+                min={0}
                 max={100}
                 orientation='horizontal'
-                value={this.props.value2 || this.state.value2}
+                value={this.props.value2 === undefined ? this.state.value2 : this.props.value2}
                 onChange={this.onSlider2Change} /></div>
         </div>
     }

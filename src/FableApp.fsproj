@@ -4,9 +4,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="OpticsPlay.fs" />
+    <Compile Include="data/TedTalkData.fs" />
     <Compile Include="components/RangeSlider.fs" />
+    <Compile Include="components/TedTalkView.fs" />
+    <Compile Include="components/DualSliderFS.fs" />
     <Compile Include="components/DualSlider.fs" />
-    <Compile Include="app/Tedtalks.fs" />
+    <Compile Include="comments/Types.fs" />
+    <Compile Include="comments/State.fs" />
+    <Compile Include="comments/View.fs" />
     <Compile Include="app/App.fs" />
   </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />
