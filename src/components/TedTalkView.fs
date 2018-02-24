@@ -7,6 +7,7 @@ module R = Fable.Helpers.React
 
 type RCom = React.ComponentClass<obj>
 
+// no real reason for this. just wanted to see how it looked.
 let (</>) a b = a [ b ]
 let (</>>) a b = a [] [ b ]
 
